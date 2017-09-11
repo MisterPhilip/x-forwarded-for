@@ -1,0 +1,37 @@
+{
+  "manifest_version": 2,
+  "name": "X-Forwarded-For Header",
+  "description": "This extension allows you quickly to set the X-Forwarded-For HTTP Header",
+  "version": "0.1.1",
+  "background": {
+    "scripts": [
+      "browser-polyfill.js",
+      "eventPage.js"
+    ],
+    "persistent": true
+  },
+  "icons": {
+    "32": "assets/logo-32.png",
+    "64": "assets/logo-64.png",
+    "128": "assets/logo-128.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "32": "assets/logo-32.png",
+      "64": "assets/logo-64.png",
+      "128": "assets/logo-128.png"
+    },
+    "default_title": "Set X-Forwarded-For IP",
+    "default_popup": "options.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
+  "permissions": [
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>"
+  ]
+}

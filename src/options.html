@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>X-Forwarded-For Options</title>
+    <style>
+        body { padding: 10px; margin: 0; color: #555; }
+        input { border: 1px solid #DDD; border-radius: 3px; display: block; }
+        input.error { background-color: #ffd8d8; border-color: #a00000; }
+        div.error { color: #a00000; }
+    </style>
+</head>
+<body>
+<label for="ip">IP Address:</label>
+<input placeholder="127.0.0.1" id="ip" autofocus>
+<div id="status"></div>
+<script src="browser-polyfill.js"></script>
+<script src="options.js"></script>
+</body>
+</html>
