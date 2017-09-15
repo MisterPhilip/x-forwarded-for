@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "X-Forwarded-For Header",
   "description": "This extension allows you quickly to set the X-Forwarded-For HTTP Header",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "background": {
     "scripts": [
       "browser-polyfill.js",

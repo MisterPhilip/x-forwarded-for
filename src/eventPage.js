@@ -1,11 +1,11 @@
 (function() {
     let spoofIp = '';
     browser.storage.sync.get({
-            spoofIp: ''
-        }).then((settings) => {
-            spoofIp = settings.spoofIp;
-            setBadge(spoofIp);
-        });
+        spoofIp: ''
+    }).then((settings) => {
+        spoofIp = settings.spoofIp;
+        setBadge(spoofIp);
+    });
     browser.webRequest.onBeforeSendHeaders.addListener(
         (details) => {
             if (spoofIp)
@@ -42,8 +42,10 @@
         if(spoofIp) {
             browser.browserAction.setBadgeBackgroundColor({color: [0, 136, 0, 150]});
             browser.browserAction.setBadgeText({text: 'IP'});
+            browser.browserAction.setTitle({title: 'Spoofing ' + spoofIp});
         } else {
             browser.browserAction.setBadgeText({text: ''});
+            browser.browserAction.setTitle({title: 'Currently not spoofing any IP Address. Click to set IP.'});
         }
     }
 })();
