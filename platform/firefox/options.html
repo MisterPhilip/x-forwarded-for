@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>X-Forwarded-For Options</title>
+    <style>
+        #app * {
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        #app *:focus {
+            outline: none;
+        }
+        #app {
+            padding: 10px;
+            margin: 0;
+            color: #555;
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+            min-width: 225px;
+        }
+        input::-webkit-input-placeholder {
+            color: #BBB;
+        }
+        form {
+            position: relative;
+        }
+        #ip {
+            display: block;
+            padding: 10px 30px 10px 5px;
+            border: none;
+            border-bottom: solid 2px #c9c9c9;
+            transition: border 0.3s ease-in-out, background 0.3s ease-in-out;
+            width: 100%;
+        }
+        .error #ip {
+            border-color: #dc3545;
+            background: url('data:image/svg+xml;utf8,<svg width="12" height="16" viewBox="0 0 12 16" xmlns="http://www.w3.org/2000/svg"><title>x</title><path d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48" fill="#dc3545" fill-rule="evenodd"/></svg>') no-repeat scroll right 10px center;
+        }
+        .success #ip {
+            border-color: #28a745;
+            background: url('data:image/svg+xml;utf8,<svg width="12" height="16" viewBox="0 0 12 16" xmlns="http://www.w3.org/2000/svg"><title>check</title><path d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5" fill="#28a745" fill-rule="evenodd"/></svg>') no-repeat scroll right 10px center;
+        }
+        #status {
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+        }
+        .success #status {
+            color: #28a745;
+            opacity: 1;
+        }
+        .error #status {
+            color: #dc3545;
+            opacity: 1;
+        }
+        #clear {
+            cursor: pointer;
+            position: absolute;
+            top: -3px;
+            right: 0;
+            padding: .4em .2em;
+            font-size: .9em;
+            color: #AAA;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+        #clear:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body id="app">
+<form>
+    <label for="ip">IP Address:</label>
+    <a id="clear">Clear</a>
+    <input type="text" placeholder="127.0.0.1" id="ip" autofocus autocomplete="off">
+    <small id="status"></small>
+</form>
+<script src="browser-polyfill.js"></script>
+<script src="options.js"></script>
+</body>
+</html>

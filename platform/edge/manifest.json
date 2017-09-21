@@ -1,5 +1,4 @@
 {
-    "manifest_version": 2,
     "name": "X-Forwarded-For Header",
     "description": "This extension allows you quickly to set the X-Forwarded-For HTTP Header",
     "author": "Philip Lawrence",
@@ -23,12 +22,10 @@
             "38": "assets/logo-38-bw.png"
         },
         "default_title": "Set X-Forwarded-For IP",
-        "default_popup": "options.html",
-        "browser_style": true
+        "default_popup": "options.html"
     },
     "options_ui": {
-        "page": "options.html",
-        "browser_style": true
+        "page": "options.html"
     },
     "permissions": [
         "storage",
@@ -38,7 +35,7 @@
     ],
     "applications": {
         "gecko": {
-            "id": "{9e00ccd0-bf33-4038-929d-833a4b8d723b}"
+            "id": "##GECKO_ID##"
         }
     }
 }
