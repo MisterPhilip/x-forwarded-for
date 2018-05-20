@@ -2,7 +2,7 @@
     "name": "X-Forwarded-For Header",
     "description": "This extension allows you quickly to set the X-Forwarded-For HTTP Header",
     "author": "Philip Lawrence",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "background": {
         "scripts": [
             "eventPage.js"
