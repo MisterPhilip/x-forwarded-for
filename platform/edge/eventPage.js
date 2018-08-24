@@ -1,7 +1,8 @@
 (function() {
     let spoofIp = '';
     browser.storage.sync.get({
-        spoofIp: ''
+        spoofIp: '',
+        previous: []
     }).then((settings) => {
         spoofIp = settings.spoofIp;
         setBadge(spoofIp);
@@ -31,6 +32,7 @@
         ['blocking', 'requestHeaders']
     );
     browser.storage.onChanged.addListener((changes, namespace) => {
+        console.log("storage changed", changes);
         if (typeof changes['spoofIp'] === 'object')
         {
             spoofIp = changes['spoofIp'].newValue;

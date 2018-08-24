@@ -28,6 +28,10 @@
         form {
             position: relative;
         }
+        #wrapper {
+            padding-bottom: 15px;
+            position: relative;
+        }
         #ip {
             display: block;
             padding: 10px 30px 10px 5px;
@@ -47,6 +51,9 @@
         #status {
             transition: opacity 0.3s ease-in-out;
             opacity: 0;
+            position: absolute;
+            bottom: 0;
+            left: 0;
         }
         .success #status {
             color: #28a745;
@@ -70,14 +77,31 @@
         #clear:hover {
             color: #333;
         }
+        p {
+            margin: 0;
+        }
+        #prev {
+            margin: 0;
+            padding: 0 0 0 1.5em;
+        }
+        #prev li {
+            padding: 2px 0;
+        }
+        #prev li a {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body id="app">
 <form id="form">
     <label for="ip">IP Address:</label>
     <a id="clear">Clear</a>
-    <input type="text" placeholder="127.0.0.1" id="ip" autofocus autocomplete="off">
-    <small id="status"></small>
+    <section id="wrapper">
+        <input type="text" placeholder="127.0.0.1" id="ip" autofocus autocomplete="off">
+        <small id="status"></small>
+    </section>
+    <p>Recently used IPs:</p>
+    <ul id="prev"></ul>
 </form>
 <script src="browser-polyfill.js"></script>
 <script src="options.js"></script>

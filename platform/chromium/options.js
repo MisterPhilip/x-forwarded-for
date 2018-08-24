@@ -1386,7 +1386,7 @@
 //# sourceMappingURL=browser-polyfill.js.map
 
 (() => {
-    let lastSavedIp = '',
+    let settings = {spoofIp: '', previous: []},
         timeout = null,
         el = {
             'ip': document.getElementById('ip'),
@@ -1394,26 +1394,36 @@
             'status': document.getElementById('status'),
             'form': document.getElementById('form'),
             'app': document.getElementById('app'),
+            'prev': document.getElementById('prev')
         },
         methods = {
             'saveOptions': () => {
                 console.log('save options called');
                 let ip = (el.ip.value || "").trim();
-                if(methods.checkIp(ip) && ip !== lastSavedIp)
+                if(methods.checkIp(ip) && ip !== settings.spoofIp)
                 {
-                    let message = 'IP Address ' + ((ip === '') ? 'Cleared' : 'Updated');
-                    methods.setSettings(ip, () => {
+                    let message = 'IP Address ' + ((ip === '') ? 'Cleared' : 'Updated'),
+                        newSettings = {
+                            spoofIp: ip,
+                            previous: settings.previous || []
+                        };
+                    if(settings.spoofIp && !/^(null|unset)$/i.test(settings.spoofIp) && !newSettings.previous.includes(settings.spoofIp)) {
+                        newSettings.previous.unshift(settings.spoofIp);
+                    }
+                    newSettings.previous = newSettings.previous.slice(0, 3);
+                    methods.setSettings(newSettings, () => {
                         methods.setStatus(message, true);
-                        lastSavedIp = ip;
+                        methods.setPrevious(newSettings.previous);
+                        settings = newSettings;
                     });
                 }
-                else if(ip === lastSavedIp)
+                else if(ip === settings.spoofIp)
                 {
                     methods.setStatus();
                 }
                 else
                 {
-                    let message = 'Invalid IP Address' + (lastSavedIp ? ', defaulting to ' + lastSavedIp : '');
+                    let message = 'Invalid IP Address' + (settings.spoofIp ? ', defaulting to ' + settings.spoofIp : '');
                     methods.setStatus(message, false, false);
                 }
             },
@@ -1427,8 +1437,11 @@
             },
             'loadOptions': () => {
                 methods.getSettings((items) => {
-                    lastSavedIp = items.spoofIp;
-                    el.ip.value = items.spoofIp
+                    console.log("loadOptions", items, items.previous);
+                    settings.spoofIp = items.spoofIp;
+                    settings.previous = items.previous;
+                    el.ip.value = items.spoofIp;
+                    methods.setPrevious(settings.previous);
                 });
             },
             'clearOptions': () => {
@@ -1469,14 +1482,39 @@
                     }, duration);
                 }
             },
+            'setPrevious': (previous = []) => {
+                while(el.prev.firstChild) {
+                    el.prev.removeChild(el.prev.firstChild);
+                }
+                previous.forEach((prev) => {
+                    let li = document.createElement('li'),
+                        a = document.createElement('a');
+                    a.innerText = prev;
+                    li.appendChild(a);
+                    el.prev.appendChild(li);
+                });
+            },
+            'loadPreviousIp': (ev) => {
+                ev.preventDefault();
+                if(ev.target.tagName !== 'A') {
+                    return;
+                }
+                let newIp = ev.target.innerText;
+                if(methods.checkIp(newIp)) {
+                    el.ip.value = newIp;
+                    methods.saveOptions();
+                }
+            },
             'getSettings': (cb) => {
                 browser.storage.sync.get({
-                    spoofIp: ''
+                    spoofIp: '',
+                    previous: []
                 }).then(cb);
             },
-            'setSettings': (value, cb) => {
+            'setSettings': (values, cb) => {
                 browser.storage.sync.set({
-                    spoofIp: value
+                    spoofIp: values.spoofIp,
+                    previous: values.previous
                 }).then(cb);
             }
         };
@@ -1485,6 +1523,7 @@
     document.addEventListener('DOMContentLoaded', methods.loadOptions);
     el.ip.addEventListener('keyup', methods.saveOptions);
     el.ip.addEventListener('blur', methods.saveOptions);
+    el.prev.addEventListener('click', methods.loadPreviousIp);
     el.clear.addEventListener('click', methods.clearOptions);
     el.form.addEventListener('submit', methods.submitForm);
 })();
