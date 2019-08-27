@@ -11,20 +11,23 @@
         (details) => {
             if (spoofIp)
             {
-                let index = details.requestHeaders.findIndex((el) => {
-                    return (el.name === 'X-Forwarded-For')
-                });
-                if(index > -1)
-                {
-                    details.requestHeaders[index].value = spoofIp;
-                }
-                else
-                {
-                    details.requestHeaders.push({
-                        'name': 'X-Forwarded-For',
-                        'value': spoofIp
+                ['X-Forwarded-For', 'X-Originating-IP', 'X-Remote-IP', 'X-Remote-Addr']
+                    .forEach(headerName => {
+                        let index = details.requestHeaders.findIndex((el) => {
+                            return (el.name === headerName)
+                        });
+                        if(index > -1)
+                        {
+                            details.requestHeaders[index].value = spoofIp;
+                        }
+                        else
+                        {
+                            details.requestHeaders.push({
+                                'name': headerName,
+                                'value': spoofIp
+                            });
+                        }
                     });
-                }
             }
             return {requestHeaders: details.requestHeaders};
         },
