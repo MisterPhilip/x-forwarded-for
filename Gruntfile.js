@@ -1,4 +1,4 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
     grunt.config.init({
         "chrome": {
@@ -73,13 +73,13 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build-extensions', 'Build the Chrome extension', (browsers = '') => {
         let allowedBrowsers = ['chrome', 'firefox', 'edge'];
-        if(browsers === '') {
+        if (browsers === '') {
             browsers = allowedBrowsers;
         } else {
             browsers = browsers.split(',');
         }
         browsers.forEach((b) => {
-            if(allowedBrowsers.indexOf(b) > -1) {
+            if (allowedBrowsers.indexOf(b) > -1) {
                 grunt.task.run(
                     'clean:' + b,
                     'build-copy:' + b,
@@ -93,13 +93,13 @@ module.exports = function(grunt) {
         });
     });
 
-    grunt.registerTask('chrome-manifest', 'Build the Chrome manifest.json file', function() {
+    grunt.registerTask('chrome-manifest', 'Build the Chrome manifest.json file', function () {
         grunt.config.requires('chrome.name', 'chrome.version');
 
         let options = grunt.config('chrome'),
             manifest = grunt.file.readJSON('src/manifest.json');
 
-        if(options.usePolyfill) {
+        if (options.usePolyfill) {
             manifest.background.scripts.unshift('browser-polyfill.js');
         }
 
@@ -115,13 +115,13 @@ module.exports = function(grunt) {
         grunt.log.write('Created Chrome\'s manifest.json. ').ok();
     });
 
-    grunt.registerTask('firefox-manifest', 'Build the Firefox manifest.json file', function() {
+    grunt.registerTask('firefox-manifest', 'Build the Firefox manifest.json file', function () {
         grunt.config.requires('firefox.name', 'firefox.version', 'firefox.gecko');
 
         let options = grunt.config('firefox'),
             manifest = grunt.file.readJSON('src/manifest.json');
 
-        if(options.usePolyfill) {
+        if (options.usePolyfill) {
             manifest.background.scripts.unshift('browser-polyfill.js');
         }
 
@@ -136,13 +136,13 @@ module.exports = function(grunt) {
         grunt.log.write('Created Firefox\'s manifest.json. ').ok();
     });
 
-    grunt.registerTask('edge-manifest', 'Build the Edge manifest.json file', function() {
+    grunt.registerTask('edge-manifest', 'Build the Edge manifest.json file', function () {
         grunt.config.requires('edge.name', 'edge.version');
 
         let options = grunt.config('edge'),
             manifest = grunt.file.readJSON('src/manifest.json');
 
-        if(options.usePolyfill) {
+        if (options.usePolyfill) {
             manifest.background.scripts.unshift('browser-polyfill.js');
         }
 
@@ -159,11 +159,11 @@ module.exports = function(grunt) {
         grunt.log.write('Created Edge\'s manifest.json. ').ok();
     });
 
-    grunt.registerTask('build-copy', 'Copy over the source files to the build directory', function(browser) {
+    grunt.registerTask('build-copy', 'Copy over the source files to the build directory', function (browser) {
         grunt.config.requires(browser);
         let options = grunt.config(browser),
             filesToCopy = ["eventPage.js", "options.html", "assets/*.*"];
-        if(options.usePolyfill) {
+        if (options.usePolyfill) {
             filesToCopy.push('browser-polyfill.js');
         }
 
@@ -175,15 +175,16 @@ module.exports = function(grunt) {
                     src: filesToCopy,
                     dest: './platform/' + options.folder
                 }
-            ]});
+            ]
+        });
         grunt.task.run('copy:' + browser);
     });
 
-    grunt.registerTask('build-concat', 'Concat build files for a browser', function(browser) {
+    grunt.registerTask('build-concat', 'Concat build files for a browser', function (browser) {
         grunt.config.requires(browser);
         let options = grunt.config(browser),
-            sourceFiles = ['src/options.js'];
-        if(options.usePolyfill) {
+            sourceFiles = ['src/ip-regex.js', 'src/options.js'];
+        if (options.usePolyfill) {
             sourceFiles.unshift('src/browser-polyfill.js');
         }
 
@@ -194,7 +195,7 @@ module.exports = function(grunt) {
         grunt.task.run('concat:' + browser);
     });
 
-    grunt.registerTask('build-compress', 'Compress build files into extension .zip', function(browser) {
+    grunt.registerTask('build-compress', 'Compress build files into extension .zip', function (browser) {
         grunt.config.requires(browser);
         let options = grunt.config(browser),
             sourceFiles = ['src/options.js'];
