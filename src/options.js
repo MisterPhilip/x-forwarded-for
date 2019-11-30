@@ -1,5 +1,11 @@
 (() => {
-    let settings = {spoofIp: '', previous: []},
+    let defaultSettings = {
+        spoofIp: '',
+        previous: [],
+        headers: ['X-Forwarded-For']
+    },
+        settings = Object.assign({}, defaultSettings),
+        allowedHeaders = ['X-Forwarded-For', 'X-Originating-IP', 'X-Remote-IP', 'X-Remote-Addr'],
         timeout = null,
         el = {
             'ip': document.getElementById('ip'),
@@ -7,35 +13,33 @@
             'status': document.getElementById('status'),
             'form': document.getElementById('form'),
             'app': document.getElementById('app'),
-            'prev': document.getElementById('prev')
+            'prev': document.getElementById('prev'),
+            'headers': [...document.querySelectorAll(`[name="headers[]"]`)]
         },
         methods = {
             'saveOptions': () => {
                 console.log('save options called');
                 let ip = (el.ip.value || "").trim();
-                if(methods.checkIp(ip) && ip !== settings.spoofIp)
-                {
+                if (methods.checkIp(ip) && ip !== settings.spoofIp) {
                     let message = 'IP Address ' + ((ip === '') ? 'Cleared' : 'Updated'),
                         newSettings = {
                             spoofIp: ip,
-                            previous: settings.previous || []
+                            previous: settings.previous || [],
+                            headers: settings.headers
                         };
-                    if(settings.spoofIp && !/^(null|unset)$/i.test(settings.spoofIp) && !newSettings.previous.includes(settings.spoofIp)) {
+                    if (settings.spoofIp && !/^(null|unset)$/i.test(settings.spoofIp) && !newSettings.previous.includes(settings.spoofIp)) {
                         newSettings.previous.unshift(settings.spoofIp);
                     }
                     newSettings.previous = newSettings.previous.slice(0, 3);
                     methods.setSettings(newSettings, () => {
                         methods.setStatus(message, true);
                         methods.setPrevious(newSettings.previous);
-                        settings = newSettings;
                     });
                 }
-                else if(ip === settings.spoofIp)
-                {
+                else if (ip === settings.spoofIp) {
                     methods.setStatus();
                 }
-                else
-                {
+                else {
                     let message = 'Invalid IP Address' + (settings.spoofIp ? ', defaulting to ' + settings.spoofIp : '');
                     methods.setStatus(message, false, false);
                 }
@@ -50,10 +54,17 @@
             },
             'loadOptions': () => {
                 methods.getSettings((items) => {
-                    console.log("loadOptions", items, items.previous);
-                    settings.spoofIp = items.spoofIp;
-                    settings.previous = items.previous;
+                    console.log("loadOptions", items);
+                    settings = Object.assign(settings, items);
+
                     el.ip.value = items.spoofIp;
+
+                    settings.headers.forEach(header => {
+                        let el = document.querySelector(`[name="headers[]"][value=${header}]`);
+                        el.checked = true;
+                        el.readOnly = (settings.headers.length === 1);
+                    });
+
                     methods.setPrevious(settings.previous);
                 });
             },
@@ -75,12 +86,10 @@
                     CLASS_SUCCESS = 'success';
 
                 classList.remove(CLASS_SUCCESS, CLASS_ERROR);
-                if(success === true)
-                {
+                if (success === true) {
                     classList.add(CLASS_SUCCESS);
                 }
-                else if(success === false)
-                {
+                else if (success === false) {
                     classList.add(CLASS_ERROR);
                 }
             },
@@ -88,7 +97,7 @@
                 el.status.textContent = msg;
                 methods.setClass(success);
                 clearTimeout(timeout);
-                if(duration) {
+                if (duration) {
                     timeout = setTimeout(() => {
                         methods.clearMessage();
                         methods.setClass();
@@ -96,7 +105,7 @@
                 }
             },
             'setPrevious': (previous = []) => {
-                while(el.prev.firstChild) {
+                while (el.prev.firstChild) {
                     el.prev.removeChild(el.prev.firstChild);
                 }
                 previous.forEach((prev) => {
@@ -109,26 +118,30 @@
             },
             'loadPreviousIp': (ev) => {
                 ev.preventDefault();
-                if(ev.target.tagName !== 'A') {
+                if (ev.target.tagName !== 'A') {
                     return;
                 }
                 let newIp = ev.target.innerText;
-                if(methods.checkIp(newIp)) {
+                if (methods.checkIp(newIp)) {
                     el.ip.value = newIp;
                     methods.saveOptions();
                 }
             },
             'getSettings': (cb) => {
-                browser.storage.sync.get({
-                    spoofIp: '',
-                    previous: []
-                }).then(cb);
+                browser.storage.sync.get(defaultSettings).then(cb);
             },
             'setSettings': (values, cb) => {
-                browser.storage.sync.set({
-                    spoofIp: values.spoofIp,
-                    previous: values.previous
-                }).then(cb);
+                browser.storage.sync.set(values).then(cb);
+                settings = values;
+            },
+            'saveHeaders': () => {
+                console.log("save headers");
+                newSettings = {
+                    spoofIp: settings.spoofIp,
+                    previous: settings.previous || [],
+                    headers: el.headers.filter(checkbox => checkbox.checked && allowedHeaders.includes(checkbox.value)).map(checkbox => checkbox.value)
+                };
+                methods.setSettings(newSettings);
             }
         };
 
@@ -139,4 +152,5 @@
     el.prev.addEventListener('click', methods.loadPreviousIp);
     el.clear.addEventListener('click', methods.clearOptions);
     el.form.addEventListener('submit', methods.submitForm);
+    el.headers.forEach(el => { el.addEventListener('change', methods.saveHeaders) });
 })();
