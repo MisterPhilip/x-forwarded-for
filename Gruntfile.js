@@ -3,20 +3,20 @@ module.exports = function (grunt) {
     grunt.config.init({
         "chrome": {
             "name": "X-Forwarded-For Header",
-            "version": "0.4.0",
+            "version": "0.5.0",
             "usePolyfill": true,
             "folder": "chromium"
         },
         "firefox": {
             "name": "X-Forwarded-For Header",
-            "version": "0.4.0",
+            "version": "0.5.0",
             "gecko": "{9e00ccd0-bf33-4038-929d-833a4b8d723b}",
             "usePolyfill": false,
             "folder": "firefox"
         },
         "edge": {
             "name": "X-Forwarded-For Header",
-            "version": "0.4.0",
+            "version": "0.5.0",
             "usePolyfill": false,
             "folder": "edge"
         },
