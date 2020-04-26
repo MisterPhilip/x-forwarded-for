@@ -1,9 +1,9 @@
 (() => {
     let defaultSettings = {
-        spoofIp: '',
-        previous: [],
-        headers: ['X-Forwarded-For']
-    },
+            spoofIp: '',
+            previous: [],
+            headers: ['X-Forwarded-For']
+        },
         settings = Object.assign({}, defaultSettings),
         allowedHeaders = ['X-Forwarded-For', 'X-Originating-IP', 'X-Remote-IP', 'X-Remote-Addr'],
         timeout = null,
@@ -135,7 +135,7 @@
             },
             'saveHeaders': () => {
                 console.log("save headers");
-                newSettings = {
+                let newSettings = {
                     spoofIp: settings.spoofIp,
                     previous: settings.previous || [],
                     headers: el.headers.filter(checkbox => checkbox.checked && allowedHeaders.includes(checkbox.value)).map(checkbox => checkbox.value)
