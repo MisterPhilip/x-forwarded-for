@@ -45,11 +45,11 @@
                 }
             },
             'checkIp': (ipVal) => {
-                return (
-                    ipVal === ''
-                    || /^(null|unset)$/i.test(ipVal)
-                    || checkIp(ipVal)
-                );
+                return ipVal === '' ||
+                        /^(null|unset)$/i.test(ipVal) ||
+                        ipVal.split(/[ ,]+/).every((ipAddress) => {
+                            return checkIp(ipAddress);
+                        });
             },
             'loadOptions': () => {
                 methods.getSettings((items) => {
