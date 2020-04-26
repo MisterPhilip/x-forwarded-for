@@ -1,6 +1,6 @@
 {
   "name": "x-forwarded-for-browser-plugin",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "X-Forwarded-For Browser Plugin",
   "devDependencies": {
     "grunt": "^1.0.4",
