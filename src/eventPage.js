@@ -29,7 +29,7 @@
             return { requestHeaders: details.requestHeaders };
         },
         { urls: ['<all_urls>'] },
-        ['blocking', 'requestHeaders']
+        ['blocking', 'requestHeaders', 'extraHeaders']
     );
     browser.storage.onChanged.addListener((changes, namespace) => {
         console.log("storage changed", changes);
