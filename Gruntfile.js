@@ -3,27 +3,20 @@ module.exports = function (grunt) {
     grunt.config.init({
         "chrome": {
             "name": "X-Forwarded-For Header",
-            "version": "0.6.1",
+            "version": "0.6.2",
             "usePolyfill": true,
             "folder": "chromium"
         },
         "firefox": {
             "name": "X-Forwarded-For Header",
-            "version": "0.6.1",
+            "version": "0.6.2",
             "gecko": "{9e00ccd0-bf33-4038-929d-833a4b8d723b}",
             "usePolyfill": false,
             "folder": "firefox"
         },
-        "edge": {
-            "name": "X-Forwarded-For Header",
-            "version": "0.6.1",
-            "usePolyfill": false,
-            "folder": "edge"
-        },
         "clean": {
             "chrome": ["platform/chromium", "build/chome_*.zip"],
             "firefox": ["platform/firefox"],
-            "edge": ["platform/edge"]
         },
         "watch": {
             "chrome": {
@@ -32,7 +25,8 @@ module.exports = function (grunt) {
                     'clean:chrome',
                     'build-copy:chrome',
                     'chrome-manifest',
-                    'build-concat:chrome'
+                    'build-concat:chrome',
+                    'build-placeholders:chrome',
                 ],
                 "options": {
                     "spawn": false,
@@ -44,19 +38,8 @@ module.exports = function (grunt) {
                     'clean:firefox',
                     'build-copy:firefox',
                     'firefox-manifest',
-                    'build-concat:firefox'
-                ],
-                "options": {
-                    "spawn": false,
-                },
-            },
-            "edge": {
-                "files": ['src/**'],
-                "tasks": [
-                    'clean:edge',
-                    'build-copy:edge',
-                    'edge-manifest',
-                    'build-concat:edge'
+                    'build-concat:firefox',
+                    'build-placeholders:firefox',
                 ],
                 "options": {
                     "spawn": false,
@@ -70,9 +53,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks("grunt-text-replace");
 
-    grunt.registerTask('build-extensions', 'Build the Chrome extension', (browsers = '') => {
-        let allowedBrowsers = ['chrome', 'firefox', 'edge'];
+    grunt.registerTask('build-extensions', 'Build the extension', (browsers = '') => {
+        let allowedBrowsers = ['chrome', 'firefox'];
         if (browsers === '') {
             browsers = allowedBrowsers;
         } else {
@@ -85,6 +69,7 @@ module.exports = function (grunt) {
                     'build-copy:' + b,
                     b + '-manifest',
                     'build-concat:' + b,
+                    'build-placeholders:' + b,
                     'build-compress:' + b
                 );
             } else {
@@ -136,29 +121,6 @@ module.exports = function (grunt) {
         grunt.log.write('Created Firefox\'s manifest.json. ').ok();
     });
 
-    grunt.registerTask('edge-manifest', 'Build the Edge manifest.json file', function () {
-        grunt.config.requires('edge.name', 'edge.version');
-
-        let options = grunt.config('edge'),
-            manifest = grunt.file.readJSON('src/manifest.json');
-
-        if (options.usePolyfill) {
-            manifest.background.scripts.unshift('browser-polyfill.js');
-        }
-
-        manifest.name = options.name;
-        manifest.version = options.version;
-
-        // Remove anything that will break Edge's import routine
-        delete manifest.manifest_version;
-        delete manifest.browser_action.browser_style;
-        delete manifest.options_ui.chrome_style;
-        delete manifest.options_ui.browser_style;
-
-        grunt.file.write('platform/' + options.folder + '/manifest.json', JSON.stringify(manifest, null, 4));
-        grunt.log.write('Created Edge\'s manifest.json. ').ok();
-    });
-
     grunt.registerTask('build-copy', 'Copy over the source files to the build directory', function (browser) {
         grunt.config.requires(browser);
         let options = grunt.config(browser),
@@ -193,6 +155,30 @@ module.exports = function (grunt) {
             dest: 'platform/' + options.folder + '/options.js'
         });
         grunt.task.run('concat:' + browser);
+    });
+
+    grunt.registerTask("build-placeholders", "Update placeholders in built files", function (browser) {
+        grunt.config.requires(browser);
+        let browserOptions = grunt.config(browser),
+            config = {
+                "src": [
+                    "platform/" + browserOptions.folder + "/manifest.json",
+                    "platform/" + browserOptions.folder + "/**/*.js",
+                    "platform/" + browserOptions.folder + "/*.js",
+                    "platform/" + browserOptions.folder + "/**/*.html",
+                    "platform/" + browserOptions.folder + "/*.html"
+                ],
+                "overwrite": true,
+                "usePrefix": false,
+                "replacements": [
+                    {
+                        "from": "##BROWSER##",
+                        "to": browser
+                    },
+                ]
+            };
+        grunt.config.set("replace." + browser, config);
+        grunt.task.run("replace:" + browser);
     });
 
     grunt.registerTask('build-compress', 'Compress build files into extension .zip', function (browser) {

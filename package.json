@@ -24,5 +24,7 @@
     "url": "https://github.com/MisterPhilip/x-forwarded-for/issues"
   },
   "homepage": "https://github.com/MisterPhilip/x-forwarded-for#readme",
-  "dependencies": {}
+  "dependencies": {
+    "grunt-text-replace": "^0.4.0"
+  }
 }

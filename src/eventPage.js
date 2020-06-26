@@ -8,10 +8,12 @@
         settings = loadedSettings;
         setBadge(settings.spoofIp);
     });
+    const extraInfoSpec = "##BROWSER##" === "chrome" ?
+        ['blocking', 'requestHeaders', 'extraHeaders'] :
+        ['blocking', 'requestHeaders'];
     browser.webRequest.onBeforeSendHeaders.addListener(
         (details) => {
             if (settings.spoofIp) {
-                console.log("browser settings", settings);
                 settings.headers.forEach(headerName => {
                     let index = details.requestHeaders.findIndex((el) => {
                         return (el.name === headerName)
@@ -29,7 +31,7 @@
             return { requestHeaders: details.requestHeaders };
         },
         { urls: ['<all_urls>'] },
-        ['blocking', 'requestHeaders', 'extraHeaders']
+        extraInfoSpec
     );
     browser.storage.onChanged.addListener((changes, namespace) => {
         console.log("storage changed", changes);
