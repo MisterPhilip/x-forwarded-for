@@ -1,6 +1,6 @@
 {
   "name": "x-forwarded-for-browser-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "X-Forwarded-For Browser Plugin",
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",
