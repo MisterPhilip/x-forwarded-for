@@ -37,7 +37,9 @@ const convertProfileToRule = (profile: Profile): chrome.declarativeNetRequest.Ru
                 }
             }),
         },
-        condition: {}
+        condition: {
+            resourceTypes: ["main_frame", "sub_frame", "stylesheet", "script", "image", "font", "object", "xmlhttprequest", "ping", "csp_report", "media", "websocket", "webtransport", "webbundle", "other"],
+        },
     };
 
     if (profile.domains.length) {
