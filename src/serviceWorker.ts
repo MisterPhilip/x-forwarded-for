@@ -1,3 +1,5 @@
+import ResourceType = chrome.declarativeNetRequest.ResourceType;
+
 interface Profile {
     id: number;
     name: string;
@@ -38,7 +40,24 @@ const convertProfileToRule = (profile: Profile): chrome.declarativeNetRequest.Ru
             }),
         },
         condition: {
-            resourceTypes: ["main_frame", "sub_frame", "stylesheet", "script", "image", "font", "object", "xmlhttprequest", "ping", "csp_report", "media", "websocket", "webtransport", "webbundle", "other"],
+            resourceTypes: [
+                ResourceType.MAIN_FRAME,
+                ResourceType.SUB_FRAME,
+                ResourceType.STYLESHEET,
+                ResourceType.SCRIPT,
+                ResourceType.IMAGE,
+                ResourceType.FONT,
+                ResourceType.OBJECT,
+                ResourceType.XMLHTTPREQUEST,
+                ResourceType.PING,
+                ResourceType.CSP_REPORT,
+                ResourceType.MEDIA,
+                ResourceType.WEBSOCKET,
+                ResourceType.OTHER,
+                ResourceType.MEDIA,
+                "webtransport" as ResourceType,
+                "webbundle" as ResourceType
+            ],
         },
     };
 
