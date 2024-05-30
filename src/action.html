@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        :root {
+            /** CSS DARK THEME PRIMARY COLORS */
+            --color-primary-100:  #03a9f4;
+            --color-primary-200:  #4ab2f5;
+            --color-primary-300:  #6abcf7;
+            --color-primary-400:  #84c5f8;
+            --color-primary-500:  #9bcefa;
+            --color-primary-600:  #b1d8fb;
+            --color-primary-text: #F2F2F3;
+            --color-primary-text-muted: #C8CDD0;
+            --color-primary-text-inverse: #1F292E;
+            --color-primary-text-inverse-muted: #415058;
+
+            /** CSS DARK THEME SURFACE COLORS */
+            --color-surface-100:  #121212;
+            --color-surface-200:  #282828;
+            --color-surface-300:  #3f3f3f;
+            --color-surface-400:  #575757;
+            --color-surface-500:  #717171;
+            --color-surface-600:  #8b8b8b;
+
+            /** CSS DARK THEME MIXED SURFACE COLORS */
+            --color-surface-mixed-100:  #1e2c38;
+            --color-surface-mixed-200:  #34404b;
+            --color-surface-mixed-300:  #4a5560;
+            --color-surface-mixed-400:  #626b75;
+            --color-surface-mixed-500:  #7a828a;
+            --color-surface-mixed-600:  #939aa0;
+
+            --color-success:        #73B234;
+            --color-success-dark:   #60952c;
+            --color-error:          #C91D1D;
+            --color-error-dark:     #ab1919;
+            --color-warning:        #E8A530;
+            --color-warning-dark:   #cb9029;
+        }
+        @font-face{
+            font-family: 'Inter';
+            src: url("./assets/Inter-VariableFont_slnt,wght.ttf");
+        }
+        html {
+            width: 250px;
+        }
+        body {
+            padding: 1rem;
+            background: var(--color-surface-mixed-200);
+            color: var(--color-primary-text);
+        }
+    </style>
+</head>
+<body>
+    <ext-action-screen></ext-action-screen>
+    <script src="./components/action-screen.ts" type="module"></script>
+</body>
+</html>

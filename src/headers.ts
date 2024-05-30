@@ -1,0 +1,20 @@
+const headers: string[] = [
+    "X-Forwarded-For",
+    "X-Originating-IP",
+    "X-Remote-IP",
+    "X-Remote-Addr",
+    "X-Real-IP",
+    "X-Forwarded",
+    "X-Cluster-Client-IP",
+    "Forwarded-For",
+    "Forwarded",
+    "True-Client-IP",
+    "Client-IP",
+    "Ali-CDN-Real-IP",
+    "Cdn-Src-IP",
+    "Cdn-Real-IP",
+    "CF-Connecting-IP",
+    "WL-Proxy-Client-IP",
+    "Proxy-Client-IP",
+];
+export default headers;

@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "__buildName__",
+  "description": "This extension allows you quickly to set the X-Forwarded-For HTTP Header",
+  "author": "Philip Lawrence",
+  "version": "__buildVersion__",
+  "background": {
+    "service_worker": "serviceWorker.js",
+    "type": "module"
+  },
+  "default_locale": "en",
+  "action": {
+    "default_icon": {
+      "16": "assets/logo-16-bw.png",
+      "32": "assets/logo-32-bw.png",
+      "38": "assets/logo-38-bw.png"
+    },
+    "default_popup": "action.html"
+  },
+  "icons": {
+    "32": "assets/logo-32.png",
+    "38": "assets/logo-38.png",
+    "64": "assets/logo-64.png",
+    "128": "assets/logo-128.png"
+  },
+  "permissions": [
+    "storage",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}

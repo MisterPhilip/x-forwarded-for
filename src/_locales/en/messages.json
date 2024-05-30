@@ -1,0 +1,129 @@
+{
+  "action_profiles_enabled_count": {
+    "message": "$active$ of $total$ profiles enabled.",
+    "placeholders": {
+      "active": {
+        "content": "$1",
+        "example": "1"
+      },
+      "total": {
+        "content": "$2",
+        "example": "5"
+      }
+    }
+  },
+  "all_domains": {
+    "message": "All Domains"
+  },
+  "btn_add_profile": {
+    "message": "Add New Profile"
+  },
+  "btn_enable": {
+    "message": "Enable"
+  },
+  "btn_enable_extension": {
+    "message": "Enable Extension"
+  },
+  "btn_edit": {
+    "message": "Edit"
+  },
+  "btn_delete": {
+    "message": "Delete"
+  },
+  "btn_disable": {
+    "message": "Disable"
+  },
+  "btn_disable_extension": {
+    "message": "Disable Extension"
+  },
+  "btn_edit_profiles": {
+    "message": "Edit Profiles"
+  },
+  "btn_save": {
+    "message": "Save"
+  },
+  "btn_up": {
+    "message": "Move Up"
+  },
+  "btn_down": {
+    "message": "Move Down"
+  },
+  "error_domains_required": {
+    "message": "At least one domain is required"
+  },
+  "error_name_required": {
+    "message": "Profile name is required"
+  },
+  "error_value_required": {
+    "message": "IP Address is required"
+  },
+  "error_headers_required": {
+    "message": "At least one header is required"
+  },
+  "form_name_help": {
+    "message": "Provide a name to easily distinguish this profile from others."
+  },
+  "form_name_label": {
+    "message": "Profile Name"
+  },
+  "form_name_placeholder": {
+    "message": "My Awesome Profile"
+  },
+  "form_value_label": {
+    "message": "IP Address(es)"
+  },
+  "form_value_help": {
+    "message": "Multiple IP addresses can be separated with a space."
+  },
+  "form_headers_label": {
+    "message": "Headers"
+  },
+  "form_headers_help": {
+    "message": "Select one or more headers to update."
+  },
+  "form_domains_help": {
+    "message": "Provide a space-delimited or comma-delimited list of domains to either include or exclude. Domains will also match all subdomains (e.g., 'github.com' will match 'www.github.com' and 'example.github.com'). Note that these are the request domains, which may differ from the URL you see in the URL bar."
+  },
+  "form_domains_label": {
+    "message": "Domains"
+  },
+  "form_domains_value_all": {
+    "message": "All Domains"
+  },
+  "form_domains_value_some": {
+    "message": "Some Domains"
+  },
+  "form_domains_value_include": {
+    "message": "Include"
+  },
+  "form_domains_value_exclude": {
+    "message": "Exclude"
+  },
+  "ext_name": {
+    "message": "X-Forwarded-For"
+  },
+  "profile_set_headers": {
+    "message": "Set Headers"
+  },
+  "profile_to_value": {
+    "message": "To the value of"
+  },
+  "profile_for_all_domains": {
+    "message": "For all domains"
+  },
+  "profile_for_domains_included": {
+    "message": "For the following domains"
+  },
+  "profile_for_domains_excluded": {
+    "message": "For all domains except the following"
+  },
+  "profile_page_title": {
+    "message": "Edit Profiles for the X-Forwarded-For Extension"
+  },
+  "status_enabled": {
+    "message": "Enabled"
+  },
+  "status_disabled": {
+    "message": "Disabled"
+  }
+}
