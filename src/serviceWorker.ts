@@ -89,40 +89,40 @@ const updateDeclarativeRules = ({ addRules = [], removeRules = [] }: { addRules?
 const updateFromSettings = async () => {
     const storedSettings = await chrome.storage.sync.get(["enabled", "profiles"]) as { enabled?: boolean, profiles?: Profile[] };
     const oldRules = await chrome.declarativeNetRequest.getDynamicRules();
-
-    console.log("updateFromSettings", storedSettings, oldRules);
+    let enabled: boolean;
 
     if(!storedSettings || !storedSettings.enabled || !storedSettings.profiles) {
         if(oldRules.length) {
             updateDeclarativeRules({ removeRules: oldRules });
         }
+        enabled = false;
+    } else {
+        // Rebuild the dynamic rule set
+        const rules: chrome.declarativeNetRequest.Rule[] = storedSettings.profiles
+            .filter((profile) => profile.enabled)
+            .map(convertProfileToRule);
 
-        await chrome.action.setIcon({
-            path: {
-                16: 'assets/logo-16-bw.png',
-                32: 'assets/logo-32-bw.png',
-                38: 'assets/logo-38-bw.png',
-            }});
-        return;
+        updateDeclarativeRules({addRules: rules, removeRules: oldRules});
+        enabled = true;
     }
-
-    // Rebuild the dynamic rule set
-    const rules: chrome.declarativeNetRequest.Rule[] = storedSettings.profiles
-        .filter((profile) => profile.enabled)
-        .map(convertProfileToRule);
-
-    updateDeclarativeRules({addRules: rules, removeRules: oldRules});
-
-    await chrome.action.setIcon({
-        path: {
-            16: 'assets/logo-16.png',
-            32: 'assets/logo-32.png',
-            38: 'assets/logo-38.png',
-        }
-    });
+    await updateIcon(enabled);
 };
 
-chrome.storage.sync.onChanged.addListener(updateFromSettings);
+const updateIcon = async (enabled?: boolean)=>  {
+    console.log("updateIcon", enabled);
+    if(typeof enabled !== "boolean") {
+        const oldRules = await chrome.declarativeNetRequest.getDynamicRules();
+        enabled = oldRules.length > 0;
+    }
+
+    const icon = enabled ? "" : "-bw";
+    await chrome.action.setIcon({
+        path: {
+            16: `assets/logo-16${icon}.png`,
+            32: `assets/logo-32${icon}.png`,
+            38: `assets/logo-38${icon}.png`,
+        }});
+}
 
 chrome.runtime.onInstalled.addListener(async ({ reason, previousVersion }) => {
     if(reason === chrome.runtime.OnInstalledReason.INSTALL) {
@@ -174,3 +174,9 @@ chrome.runtime.onInstalled.addListener(async ({ reason, previousVersion }) => {
 
     await updateFromSettings();
 });
+
+// Update the icon status based on what DNR rules are enabled on browser startup
+chrome.runtime.onStartup.addListener(updateIcon);
+
+// Update the icon & DNR rules when storage has changed
+chrome.storage.sync.onChanged.addListener(updateFromSettings);
