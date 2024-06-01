@@ -51,6 +51,9 @@
   "btn_down": {
     "message": "Move Down"
   },
+  "btn_copy_debug": {
+    "message": "Copy Debug Info"
+  },
   "error_domains_required": {
     "message": "At least one domain is required"
   },
