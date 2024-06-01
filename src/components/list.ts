@@ -24,6 +24,21 @@ export class ListProfilesElement extends LitElement {
         p {
             font-size: .9rem;
         }
+        p.disabled {
+            color: var(--color-error);
+            font-weight: bold;
+            padding: 0.5rem 0;
+        }
+        p.disabled button {
+            outline: 0;
+            background: inherit;
+            border: none;
+            color: inherit;
+            font-weight: inherit;
+            font-size: inherit;
+            text-decoration: underline;
+            cursor: pointer;
+        }
         main {
             display: flex;
             flex-direction: column;
@@ -44,12 +59,15 @@ export class ListProfilesElement extends LitElement {
     protected _profiles: Profile[] = produce([], ()=> {});
 
     @state()
+    protected _enabled: boolean = false;
+
+    @state()
     protected _showProfileForm: boolean = false;
 
     override connectedCallback() {
         super.connectedCallback();
 
-        chrome.storage.sync.get(["profiles"], ((settings) => {
+        chrome.storage.sync.get(["enabled", "profiles"], ((settings) => {
             const profiles = settings.profiles as Profile[];
             if(Array.isArray(profiles)) {
                 this._profiles = produce(this._profiles, (draftState) => {
@@ -58,6 +76,8 @@ export class ListProfilesElement extends LitElement {
                     });
                 });
             }
+
+            this._enabled = settings.enabled;
         }));
     }
 
@@ -74,6 +94,10 @@ export class ListProfilesElement extends LitElement {
             <header>
                 <h1>X-Forwarded-For Header Profiles</h1>
                 <p>Profiles allow you to use different values for different headers and/or domains. If multiple enabled profiles match a domain with the same header(s), the last profile will take precedence.</p>
+                ${!this._enabled ?
+                    html`<p class="disabled">${chrome.i18n.getMessage("profile_extension_disabled")} <button @click=${this._enableExtension}>${chrome.i18n.getMessage("btn_enable_extension")}</button></p>` :
+                    nothing
+                }
             </header>
             <main
                 @editProfile=${this._editProfile}
@@ -182,5 +206,14 @@ export class ListProfilesElement extends LitElement {
 
         // @TODO: change to immutable pattern
         console.log("saving profile, requesting update");
+    }
+
+    protected async _enableExtension(event: Event) {
+        event.preventDefault();
+        await chrome.storage.sync.set({
+            enabled: true
+        });
+        this._enabled = true;
+        // @TODO: success/fail messages
     }
 }

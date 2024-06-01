@@ -16,6 +16,12 @@ export class ActionScreenElement extends LitElement {
         h3 {
             margin: 0.5rem 0 1rem 0;
         }
+        p.disabled {
+            color: var(--color-error);
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 0;
+        }
         ext-button {
             display: block;
             margin: 0.5rem 0;
@@ -44,10 +50,12 @@ export class ActionScreenElement extends LitElement {
     override render() {
         return html`
             <h1>${chrome.i18n.getMessage("ext_name")}</h1>
-            <p>${chrome.i18n.getMessage("action_profiles_enabled_count", [
-                String(this._profiles.filter((profile) => profile.enabled).length),
-                String(this._profiles.length)
-            ])}</p>
+            <p>
+                ${chrome.i18n.getMessage("action_profiles_enabled_count", [
+                    String(this._enabled ? this._profiles.filter((profile) => profile.enabled).length : 0),
+                    String(this._profiles.length)
+                ])}
+            </p>
             <ext-button @click=${this._openProfilePage} class="btn-outline">${chrome.i18n.getMessage("btn_edit_profiles")}</ext-button>
             ${this._enabled ?
                 html`
@@ -57,7 +65,10 @@ export class ActionScreenElement extends LitElement {
                 html`
                     <ext-button @click=${this._toggleEnabled} class="btn-outline btn-success">
                         ${chrome.i18n.getMessage(`btn_enable_extension`)}
-                    </ext-button>`
+                    </ext-button>
+                    <p class="disabled">
+                        ${chrome.i18n.getMessage("action_profiles_extension_disabled")}
+                    </p>`
                 }
         `
     }

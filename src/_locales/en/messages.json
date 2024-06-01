@@ -1,6 +1,6 @@
 {
   "action_profiles_enabled_count": {
-    "message": "$active$ of $total$ profiles enabled.",
+    "message": "$active$ of $total$ profiles active.",
     "placeholders": {
       "active": {
         "content": "$1",
@@ -11,6 +11,9 @@
         "example": "5"
       }
     }
+  },
+  "action_profiles_extension_disabled": {
+    "message": "The extension is disabled and your headers will not be updated. Click the button above to enable the extension."
   },
   "all_domains": {
     "message": "All Domains"
@@ -119,6 +122,9 @@
   },
   "profile_page_title": {
     "message": "Edit Profiles for the X-Forwarded-For Extension"
+  },
+  "profile_extension_disabled": {
+    "message": "The extension is disabled and your headers will not be updated."
   },
   "status_enabled": {
     "message": "Enabled"
