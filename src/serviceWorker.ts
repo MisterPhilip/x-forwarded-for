@@ -9,15 +9,6 @@ interface Profile {
     includeDomains: boolean;
     enabled: boolean;
 }
-interface NewOrExistingProfile {
-    id: number | null;
-    name: string;
-    headers: string[];
-    value: string;
-    domains: string[];
-    includeDomains: boolean;
-    enabled: boolean;
-}
 
 interface LegacyV0Settings {
     spoofIp: string,
@@ -109,7 +100,6 @@ const updateFromSettings = async () => {
 };
 
 const updateIcon = async (enabled?: boolean)=>  {
-    console.log("updateIcon", enabled);
     if(typeof enabled !== "boolean") {
         const oldRules = await chrome.declarativeNetRequest.getDynamicRules();
         enabled = oldRules.length > 0;
