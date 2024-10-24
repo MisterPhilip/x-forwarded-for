@@ -183,10 +183,12 @@ export class ProfileFormElement extends LitElement {
         let { id , value , required} = event.target as HTMLInputElement;
         if(id === "headers") {
             this.headers = Array.from((event.target as HTMLSelectElement).selectedOptions, option => option.value);
-        } else if(["name", "value", "includeDomains", "domains"].includes(id)) {
+        } else if(["name", "value", "domains"].includes(id)) {
             this[id] = value.trim();
         } else if(id === "allDomains") {
             this.allDomains = (value === "true");
+        } else if (id === "includeDomains") {
+            this.includeDomains = (value === "true");
         }
 
         if(required) {
@@ -214,7 +216,7 @@ export class ProfileFormElement extends LitElement {
             value: this.value,
             headers: this.headers,
             // @ts-ignore
-            includeDomains: this.includeDomains !== "false",
+            includeDomains: this.includeDomains,
             domains: this.domains,
         }
 
