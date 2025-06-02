@@ -134,5 +134,19 @@
   },
   "status_disabled": {
     "message": "Disabled"
+  },
+  "confirm_delete_message": {
+      "message": "Are you sure to delete [$name$] Profiles?",
+      "placeholders": {
+          "name": {
+              "content": "$1"
+          }
+      }
+  },
+  "btn_yes": {
+      "message": "Yes"
+  },
+  "btn_cancel": {
+      "message": "No"
   }
 }
